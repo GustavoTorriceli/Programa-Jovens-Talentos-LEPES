@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+	<title>Teste estágio - Gustavo Torriceli</title>
+
+<style>
+    div { 
+    width: 100%; 
+    background: rgb(255, 255, 255);
+ 
+    justify-content: center;
+    align-items: center
+    }
+
+    body {background-color: rgb(1, 200, 250);}
+
+    .cor {
+        background-color: rgb(1, 200, 250);
+    }
+
+</style>
+
+
+<script>
+         
+ 
+
+    function calculaMedia(repJson)
+    {
+       var obj = JSON.parse(repJson);
+       
+       numerodeElementos = obj.alunos.length;
+       
+       var i;
+       var total = 0;
+
+       for (i = 0; i <= numerodeElementos-1; i++) 
+       {
+            total = total + parseFloat(obj.alunos[i].nota)
+       };
+
+       media = total / numerodeElementos
+       
+       media = media.toFixed(1)
+       
+       
+       return media
+    }
+
+
+
+    function calculaMediana(repJson)
+    {
+       var obj = JSON.parse(repJson);
+
+       numerodeElementos = obj.alunos.length; 
+
+       var vetNotaSep =  [];
+
+       var i;
+       for (i = 0; i <= numerodeElementos - 1 ; i++) 
+       {
+        vetNotaSep[i] = parseFloat(obj.alunos[i].nota)
+       };
+
+       vetNotaSep.sort();
+             
+       parteInteira = Math.trunc(numerodeElementos/2)  
+
+       if ((parteInteira*2)<numerodeElementos)
+       {
+          mediana    = parseFloat(vetNotaSep[parteInteira])
+       }  
+       if ((parteInteira*2)==numerodeElementos)
+       {
+          pos1NoVetor = parseFloat(vetNotaSep[parteInteira])
+          pos2NoVetor = parseFloat(vetNotaSep[parteInteira+1]) 
+          mediana     = (pos1NoVetor + pos2NoVetor) / 2   
+       }  
+
+       mediana = mediana.toFixed(1)
+
+       return mediana
+    }
+
+
+
+    function calculaModa(repJson)
+    {
+       var obj = JSON.parse(repJson);
+
+       numerodeElementos = obj.alunos.length; 
+
+       var vetNotaSeparada = [];
+       var registro        = [];
+
+       var i;
+       for (i = 0; i <= numerodeElementos - 1 ; i++) 
+       {
+         vetNotaSeparada[i] = parseFloat(obj.alunos[i].nota)
+       };
+
+       vetNotaSeparada.sort();
+
+       ini=0
+       vez=0
+       while (ini<=numerodeElementos-1)
+       {
+           
+            if (vetNotaSeparada[ini]!=vetNotaSeparada[ini+1])
+            {
+               vez=1 
+            }
+            else if (vetNotaSeparada[ini]==vetNotaSeparada[ini+1])
+            {
+               vez = vez + 1 
+            }
+           
+            registro[ini] = vez + "-" + vetNotaSeparada[ini]  
+
+            ini = ini + 1
+       } 
+
+       registro.sort()
+
+       des=registro[numerodeElementos-1].indexOf("-");
+       vl = registro[numerodeElementos-1].substr(0,1);
+ 
+       nx=0
+       stringP=""
+       while (nx<=numerodeElementos-1)
+       {
+            stringP=stringP + registro[nx]
+            nx=nx+1 
+       }
+
+       pr  = vl+"-";
+       prt = stringP.indexOf(pr);
+       moda= parseFloat((stringP.substr(prt+2,1)));
+
+       return moda
+  
+    }
+
+
+    function pularlinha(n)
+    {
+        var i;
+        for (i = 1; i <= n; i++) 
+        {
+            document.write("<br>")
+        };
+       return
+    }
+                   
+    function espaco(n)
+    {
+        var i;
+        for (i = 1; i <= n; i++) 
+        {
+            document.write("&nbsp;");
+        };
+        return
+    }
+
+    function ocultar()
+    {
+        document.getElementById("exibicaodeDados").innerHTML = '' 
+    }
+
+
+
+    function exibe()
+    {
+         // Representação Json
+         var repJson =   '{ "alunos" : [' +
+                                        '{"nome": "João","nota": 5.0,"idade": 45},'       +
+                                        '{"nome": "Alfredo","nota": 8.0,"idade": 17},'    +
+                                        '{"nome": "Rafael","nota": 6.0,"idade": 20},'     +
+                                        '{"nome": "Leonardo","nota": 9.9,"idade": 22},'   +
+                                        '{"nome": "Jean","nota": 4.0,"idade": 26},'       +
+                                        '{"nome": "Beto","nota": 7.0,"idade": 55},'       +
+                                        '{"nome": "Luciana","nota": 9.0,"idade": 56},'    + 
+                                        '{"nome": "Victor","nota": 2.0,"idade": 33},'     +
+                                        '{"nome": "Maria","nota": 4.0,"idade": 18},'      +
+                                        '{"nome": "Otávio","nota": 9.6,"idade": 47},'     +
+                                        '{"nome": "Priscila","nota": 2.0,"idade": 23},'   +
+                                        '{"nome": "Steves","nota": 6.9,"idade": 89},'     + 
+                                        '{"nome": "Victorina","nota": 8.1,"idade": 37},'  +
+                                        '{"nome": "Gumerlinda","nota": 1.9,"idade": 10},' + 
+                                        '{"nome": "Samuel","nota": 7.1,"idade": 56}' +
+                                     ']' +
+                         '}';
+
+        
+     vlMedia   = calculaMedia(repJson);
+     vlMediana = calculaMediana(repJson);
+     vlModa    = calculaModa(repJson);   
+
+     var obj = JSON.parse(repJson);
+     numerodeElementos = obj.alunos.length; 
+
+     stringHEAD = "<table class='table'>"      +
+                 "<thead>"                    +
+                    "<tr>"                    +
+                        "<th>Nome</th>"       +
+                        "<th>Idade</th>"      +
+                        "<th>Nota</th>"       +
+                        "<th>Média</th>"      +
+                        "<th>Mediana</th>"    +
+                        "<th>Moda</th>"       +
+                    "</tr>"                   +
+                 "</thead>"                   +
+                "<tbody>";                     
+
+    ini=0
+              
+
+    stringCORPO=""
+    while (ini<=numerodeElementos-1)
+    {
+                          
+        stringCORPO=stringCORPO + "<tr>"                          +
+                                        "<td>"                    +
+                                            obj.alunos[ini].nome  +   
+                                        "</td>"                   +    
+                                        "<td>"                    +
+                                            obj.alunos[ini].idade +   
+                                        "</td>"                   +
+                                        "<td>"                    +
+                                            obj.alunos[ini].nota  +   
+                                        "</td>"                   +               
+                                        "<td>"                    +
+                                            vlMedia               +  
+                                        "</td>"                   + 
+                                        "<td>"                    +
+                                            vlMediana             +  
+                                        "</td>"                   +   
+                                        "<td>"                    +
+                                            vlModa                +     
+                                        "</td>"                   +                                                        
+                                    "</tr>";                       
+
+        ini=ini+1
+    }
+     
+    stringFECHA="</tbody></table>"
+ 
+    stringTOTAL = stringHEAD + stringCORPO + stringFECHA
+    
+    document.getElementById("exibicaodeDados").innerHTML = stringTOTAL 
+}
+
+
+function exibestatus()
+    {
+         // Representação Json
+         var repJson =   '{ "alunos" : [' +
+                                        '{"nome": "João","nota": 5.0,"idade": 45},'       +
+                                        '{"nome": "Alfredo","nota": 8.0,"idade": 17},'    +
+                                        '{"nome": "Rafael","nota": 6.0,"idade": 20},'     +
+                                        '{"nome": "Leonardo","nota": 9.9,"idade": 22},'   +
+                                        '{"nome": "Jean","nota": 4.0,"idade": 26},'       +
+                                        '{"nome": "Beto","nota": 7.0,"idade": 55},'       +
+                                        '{"nome": "Luciana","nota": 9.0,"idade": 56},'    + 
+                                        '{"nome": "Victor","nota": 2.0,"idade": 33},'     +
+                                        '{"nome": "Maria","nota": 4.0,"idade": 18},'      +
+                                        '{"nome": "Otávio","nota": 9.6,"idade": 47},'     +
+                                        '{"nome": "Priscila","nota": 2.0,"idade": 23},'   +
+                                        '{"nome": "Steves","nota": 6.9,"idade": 89},'     + 
+                                        '{"nome": "Victorina","nota": 8.1,"idade": 37},'  +
+                                        '{"nome": "Gumerlinda","nota": 1.9,"idade": 10},' + 
+                                        '{"nome": "Samuel","nota": 7.1,"idade": 56}' +
+                                     ']' +
+                         '}';
+
+        
+     vlMedia   = calculaMedia(repJson);
+     vlMediana = calculaMediana(repJson);
+     vlModa    = calculaModa(repJson);   
+
+     var obj = JSON.parse(repJson);
+     numerodeElementos = obj.alunos.length; 
+
+     stringHEAD = "<table class='table'>"     +
+                 "<thead>"                    +
+                    "<tr>"                    +
+                        "<th>Nome</th>"       +
+                        "<th>Idade</th>"      +
+                        "<th>Nota</th>"       +
+                        "<th>Status</th>"     +
+                        "<th>Comentário</th>" +
+                        "<th>Mensagem</th>"   +
+                    "</tr>"                   +
+                 "</thead>"                   +
+                "<tbody>";                     
+
+    ini=0
+              
+
+    stringCORPO=""
+    while (ini<=numerodeElementos-1)
+    {
+                          
+        stringCORPO=stringCORPO + "<tr>"                          +
+                                        "<td>"                    +
+                                            obj.alunos[ini].nome  +   
+                                        "</td>"                   +    
+                                        "<td>"                    +
+                                            obj.alunos[ini].idade +   
+                                        "</td>"                   +
+                                        "<td>"                    +
+                                            obj.alunos[ini].nota  +   
+                                        "</td>" ;
+
+                                        mensStatus = ""
+                                        if (parseFloat(obj.alunos[ini].nota) >= vlMedia)
+                                        {
+                                            mensStatus = "<font color=green><b>Aprovado</b></font>"                                      
+                                        }
+                                        else
+                                        {
+                                            mensStatus = "<font color=red><b>Reprovado</b></font>"
+                                        }
+
+                                        mensComentario = ""
+                                        if (parseFloat(obj.alunos[ini].nota) <= vlModa)
+                                        {
+                                            mensComentario = "<b>Precisa Melhorar!</b>"                                      
+                                        }
+                                        else
+                                        {
+                                            mensComentario = "Sua nota esta acima da moda!"
+                                        }
+
+
+                                        mensMensagem = ""
+                                        if (parseFloat(obj.alunos[ini].nota) <= vlMediana && parseFloat(obj.alunos[ini].nota) > vlMedia)
+                                        {
+                                            mensMensagem = "<b>Quase lá, tenta mais um pouco!</b>"                                      
+                                        }
+                                        else
+                                        {
+                                            mensMensagem = "..."
+                                        }
+
+                          
+              stringCORPO=stringCORPO + "<td>"                    +
+                                            mensStatus            +  
+                                        "</td>"                   +   
+                                        "<td>"                    +
+                                            mensComentario        +     
+                                        "</td>"                   +   
+                                        "<td>"                    +
+                                            mensMensagem          +     
+                                        "</td>"                   +                                                                                              
+                                    "</tr>";                       
+
+        ini=ini+1
+    }
+     
+    stringFECHA="</tbody></table>"
+ 
+    stringTOTAL = stringHEAD + stringCORPO + stringFECHA
+    
+    document.getElementById("exibicaodeDados").innerHTML = stringTOTAL 
+}
+
+
+
+
+
+    
+</script>
+</head>
+
+
+<body>
+   <p align="center"> 
+       <font color=Black  size=6><b>Programa Jovens Talentos - Resolução </b> </font>
+   </p>
+
+   <div id="Dados" width=100%>
+            <p align="center">
+                <button type="button" class="btn btn-success" onclick="exibe()">Exibir Tabela Média / Mediana / Moda </button>
+                    <script>espaco(5)</script>
+                <button type="button" class="btn btn-success" onclick="exibestatus()">Exibir Tabela Status e Comentário </button>
+                    <script>espaco(5)</script>   
+                 <button type="button" class="btn btn-success" onclick="ocultar()">Ocultar Resultados</button>
+            </p>
+    </div>
+
+    <div class="container" id="exibicaodeDados">
+         
+    </div>
+
+    <div class="cor" id="rodape">
+          <p align="center"><font color=black size=3> <b> &copy Copyright 2020 - Gustavo Torriceli </b></font></p>           
+    </div>
+  
+   
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
